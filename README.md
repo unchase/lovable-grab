@@ -2,7 +2,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-![Logo](/chrome/icons/icon128.png)
+![Logo](/docs/images/screenshot-4.png)
 
 > Export source code from your [Lovable.dev](https://lovable.dev/) projects — one click, zero hassle.
 
