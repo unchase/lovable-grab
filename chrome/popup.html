@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>LovableGrab</title>
+  <meta charset="utf-8">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 340px;
+      padding: 20px;
+      font-family: 'Segoe UI', Inter, system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #1a1a2e 50%, #16213e 100%);
+      color: #e0e0e0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #e94560, #c23152);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .brand h1 {
+      font-size: 17px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #e94560, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .version {
+      font-size: 10px;
+      color: #666;
+      font-weight: 400;
+      margin-left: 4px;
+      -webkit-text-fill-color: #666;
+    }
+
+    .alert-box {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .alert-idle {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #888;
+    }
+
+    .alert-fail {
+      background: rgba(233, 69, 96, 0.12);
+      border-color: rgba(233, 69, 96, 0.3);
+      color: #ff6b6b;
+    }
+
+    .alert-ok {
+      background: rgba(0, 210, 120, 0.1);
+      border-color: rgba(0, 210, 120, 0.25);
+      color: #00d278;
+    }
+
+    .alert-wait {
+      background: rgba(255, 183, 77, 0.1);
+      border-color: rgba(255, 183, 77, 0.25);
+      color: #ffb74d;
+    }
+
+    .meta {
+      margin-bottom: 16px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .meta-row {
+      display: flex;
+      padding: 4px 0;
+    }
+
+    .meta-label {
+      width: 75px;
+      color: #555;
+      flex-shrink: 0;
+    }
+
+    .meta-value {
+      color: #aaa;
+      word-break: break-all;
+    }
+
+    .grab-btn {
+      width: 100%;
+      padding: 11px 16px;
+      background: linear-gradient(135deg, #e94560, #c23152);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .grab-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+    }
+
+    .grab-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .grab-btn:disabled {
+      background: #2a2a3e;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #444;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .footer a {
+      font-size: 10px;
+      color: #444;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: #e94560;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <h1>LovableGrab <span class="version">v1.0</span></h1>
+  </div>
+
+  <div id="alert" class="alert-box alert-idle">
+    Analyzing page…
+  </div>
+
+  <div id="meta" class="meta">
+    <div class="meta-row">
+      <span class="meta-label">Project</span>
+      <span id="proj-id" class="meta-value">—</span>
+    </div>
+    <div class="meta-row">
+      <span class="meta-label">Auth</span>
+      <span id="auth-state" class="meta-value">—</span>
+    </div>
+  </div>
+
+  <button id="grab-btn" class="grab-btn" disabled>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v12m0 0l-4-4m4 4l4-4" />
+      <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+    </svg>
+    Export Project
+  </button>
+
+  <div id="hint" class="hint">
+    Works only on lovable.dev project pages.
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/unchase" target="_blank">LovableGrab — by unchase</a>
+  </div>
+
+  <script src="plugins/jszip.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

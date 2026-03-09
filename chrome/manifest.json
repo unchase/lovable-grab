@@ -1,0 +1,54 @@
+{
+  "name": "LovableGrab",
+  "short_name": "LovableGrab",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "One-click source code exporter for Lovable.dev projects",
+  "author": "unchase",
+  "homepage_url": "https://github.com/unchase/lovable-grab",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://lovable.dev/*",
+    "https://lovable-api.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://lovable.dev/projects/*"
+      ],
+      "js": [
+        "content-script.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "plugins/*.js",
+        "injections/*.js"
+      ],
+      "matches": [
+        "https://lovable.dev/*"
+      ]
+    }
+  ]
+}
