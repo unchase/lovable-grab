@@ -16,13 +16,20 @@ Just open your project, click the button, and get a ready-to-use ZIP archive.
 - **Popup download** — click the extension icon for a quick project export
 - **Works with 3rd-party auth** — supports Google, GitHub, and email/password sign-in
 
+## 📸 Screenshots
+
+| | |
+|---|---|
+| ![Promo](/docs/images/screenshot-4.png) | ![Popup UI](/docs/images/screenshot-1.png) |
+| ![Project export](/docs/images/screenshot-2.png) | ![File tree](/docs/images/screenshot-3.png) |
+
 ## 🚀 Installation
 
 ### Chrome Extension (recommended)
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/unchase/lovable-downloader.git
+   git clone https://github.com/unchase/lovable-grab.git
    ```
 2. Open `chrome://extensions/` in Chrome
 3. Enable **Developer mode** (top-right toggle)
