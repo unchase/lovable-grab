@@ -6,7 +6,7 @@
 // @author       unchase (https://github.com/unchase)
 // @match        https://lovable.dev/projects/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lovable.dev
-// @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
+// JSZip is bundled locally in plugins/jszip.min.js and loaded by content-script.js
 // @connect      lovable-api.com
 // @grant        none
 // ==/UserScript==
@@ -26,8 +26,7 @@
     const HIDDEN_CLS = 'lg-hidden';
     const INJECT_DELAY = 500;
     const INJECT_MAX_TRIES = 10;
-    const ZIP_LIB_URL = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
-    const ZIP_SCRIPT_ID = 'lg-jszip-loader';
+    // JSZip is bundled locally and pre-loaded by content-script.js before this script runs
     const AUTH_ENDPOINTS = ['securetoken.googleapis.com', 'identitytoolkit.googleapis.com'];
     const PROGRESS_ID = 'lg-progress-bar';
     const VERBOSE = false;
@@ -185,8 +184,6 @@
     let triggerButtonObserver = null;
     let pathToItemMap = new Map();
     let buttonInjectionRetries = 0;
-    let isJszipLoading = false;
-    let jsZipLoadPromise = null;
     let loadingIndicatorElement = null; // Reference to the indicator DOM element
 
     // --- CSS Injection ---
@@ -439,18 +436,12 @@
     }
 
     // --- JSZip Loading ---
+    // JSZip is bundled in plugins/jszip.min.js and pre-loaded by content-script.js
+    // before this script is injected, so JSZip should always be available.
     async function loadJszipFromCDNIfNeeded() {
         if (typeof JSZip !== 'undefined') { log.debug("JSZip already available."); return true; }
-        if (isJszipLoading) { log.debug("JSZip dynamic load in progress..."); return jsZipLoadPromise; }
-        if (document.getElementById(ZIP_SCRIPT_ID)) { log.warn("JSZip script tag exists but global not defined."); return false; }
-        log.info("JSZip not found, attempting load from CDN..."); isJszipLoading = true;
-        jsZipLoadPromise = new Promise((resolve) => {
-            const script = document.createElement('script'); script.id = ZIP_SCRIPT_ID; script.src = ZIP_LIB_URL; script.async = true;
-            script.onload = () => { if (typeof JSZip !== 'undefined') { log.info("JSZip loaded from CDN."); isJszipLoading = false; resolve(true); } else { log.error("CDN script loaded, but JSZip global missing!"); isJszipLoading = false; resolve(false); } };
-            script.onerror = (error) => { log.error("Failed to load JSZip script from CDN:", error); isJszipLoading = false; resolve(false); };
-            document.body.appendChild(script);
-        });
-        return jsZipLoadPromise;
+        log.error("JSZip is not available. Ensure plugins/jszip.min.js is loaded before this script.");
+        return false;
     }
 
 

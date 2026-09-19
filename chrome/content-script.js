@@ -275,16 +275,20 @@ async function exportProject(projId, token) {
   }
 }
 
-// Ensure JSZip is available
+// Ensure JSZip is available (returns Promise that resolves when JSZip is ready)
 function loadJSZip() {
   out.dbg("Checking JSZip availability…");
-  if (!window.JSZip) {
+  if (window.JSZip) {
+    out.dbg("JSZip already present.");
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
     const el = document.createElement('script');
     el.src = chrome.runtime.getURL('plugins/jszip.min.js');
-    el.onload = () => out.dbg("JSZip loaded.");
-    el.onerror = (e) => out.err("JSZip load failed", e);
+    el.onload = () => { out.dbg("JSZip loaded."); resolve(); };
+    el.onerror = (e) => { out.err("JSZip load failed", e); reject(e); };
     document.head.appendChild(el);
-  }
+  });
 }
 
 // --- Message Router ---
@@ -310,8 +314,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, reply) => {
 
     resolveAuthToken().then(token => {
       if (token && pid) {
-        loadJSZip();
-        exportProject(pid, token)
+        loadJSZip().then(() => exportProject(pid, token))
           .then(r => { try { reply(r); } catch (_) { /* channel closed */ } })
           .catch(e => { try { reply({ success: false, error: e.message }); } catch (_) { /* */ } });
       } else {
@@ -337,5 +340,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, reply) => {
 
 // --- Bootstrap ---
 out.log("Content script active on Lovable project page.");
-loadJSZip();
-loadPayloadScripts();
+// JSZip must be fully loaded BEFORE injecting tampermonkey.js (which calls window.JSZip)
+loadJSZip()
+  .then(() => loadPayloadScripts())
+  .catch((e) => out.err("Bootstrap failed:", e));
